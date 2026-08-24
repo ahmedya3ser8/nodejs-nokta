@@ -13,6 +13,7 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:4200',
   'http://localhost:3000',
+  'https://nokta-v1.vercel.app'
 ];
 
 app.use(cors({
