@@ -25,7 +25,7 @@ export const createNokta = asyncHandler(async (req, res, next) => {
 // @route   GET /api/nokta
 // @access  Private
 export const getAllNokta = asyncHandler(async (req, res, next) => {
-  const noktas = await getAllNoktaService(req.user._id);
+  const noktas = await getAllNoktaService(req.user._id, req.query.search);
 
   res.status(200).json({
     success: true,

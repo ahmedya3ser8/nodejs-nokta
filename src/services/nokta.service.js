@@ -32,8 +32,27 @@ export const createNoktaService = async (userId, body) => {
   return nokta;
 }
 
-export const getAllNoktaService = async (userId) => {
-  const noktas = await Nokta.find({ user: userId }).populate('person', 'name').sort({ date: -1 });
+export const getAllNoktaService = async (userId, search) => {
+  let personIds;
+  
+  if (search?.trim()) {
+    const persons = await Person.find({
+      user: userId,
+      name: { $regex: search.trim(), $options: 'i' }
+    }).select('_id');
+    personIds = persons.map(person => person._id);
+  }
+
+  const filter = {
+    user: userId
+  };
+
+  if (personIds) {
+    filter.person = { $in: personIds };
+  }
+
+  const noktas = await Nokta.find(filter).populate('person', 'name').sort({ date: -1 });
+
   return noktas;
 }
 
